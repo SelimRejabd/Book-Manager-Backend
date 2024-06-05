@@ -15,6 +15,16 @@ def getBooks(request):
     serializer = BookSerializer(books, many=True)
     return Response(serializer.data)
 
+@api_view(['GET'])
+def getBook(request, pk):
+    try:
+        book = Book.objects.get(pk=pk)
+    except Book.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    
+    serializer = BookSerializer(book)
+    return Response(serializer.data)
+
 @api_view(['POST'])
 def addBook(request):
     serializer = BookSerializer(data=request.data)
